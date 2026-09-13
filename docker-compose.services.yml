@@ -1,0 +1,118 @@
+version: "3.9"
+
+services:
+    auth-service:
+        container_name: auth-service
+        image: ruslanparkhomchuk/cinema-platform:auth-latest
+        restart: always
+        env_file:
+            - ./envs/env.auth
+        expose:
+            - "9101"
+        volumes:
+            - ../logs/auth:/var/log/services/auth
+        networks:
+            - cinema-platform
+
+    booking-service:
+        container_name: booking-service
+        image: ruslanparkhomchuk/cinema-platform:booking-latest
+        restart: always
+        env_file:
+            - ./envs/env.booking
+        networks:
+            - cinema-platform
+
+    bot-service:
+        container_name: bot-service
+        image: ruslanparkhomchuk/cinema-platform:bot-latest
+        restart: always
+        env_file:
+            - ./envs/env.bot
+        networks:
+            - cinema-platform
+
+    gateway-service:
+        container_name: gateway-service
+        image: ruslanparkhomchuk/cinema-platform:gateway-latest
+        restart: always
+        env_file:
+            - ./envs/env.gateway
+        ports:
+            - "4000:4000"
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
+            interval: 30s
+            timeout: 3s
+            retries: 5
+        networks:
+            - cinema-platform
+
+    media-service:
+        container_name: media-service
+        image: ruslanparkhomchuk/cinema-platform:media-latest
+        restart: always
+        env_file:
+            - ./envs/env.media
+        ports:
+            - "4200:4200"
+        networks:
+            - cinema-platform
+
+    movie-service:
+        container_name: movie-service
+        image: ruslanparkhomchuk/cinema-platform:movie-latest
+        restart: always
+        env_file:
+            - ./envs/env.movie
+        networks:
+            - cinema-platform
+
+    notification-service:
+        container_name: notification-service
+        image: ruslanparkhomchuk/cinema-platform:notification-latest
+        restart: always
+        env_file:
+            - ./envs/env.notification
+        networks:
+            - cinema-platform
+
+    payment-service:
+        container_name: payment-service
+        image: ruslanparkhomchuk/cinema-platform:payment-latest
+        restart: always
+        env_file:
+            - ./envs/env.payment
+        networks:
+            - cinema-platform
+
+    screening-service:
+        container_name: screening-service
+        image: ruslanparkhomchuk/cinema-platform:screening-latest
+        restart: always
+        env_file:
+            - ./envs/env.screening
+        networks:
+            - cinema-platform
+
+    theater-service:
+        container_name: theater-service
+        image: ruslanparkhomchuk/cinema-platform:theater-latest
+        restart: always
+        env_file:
+            - ./envs/env.theater
+        networks:
+            - cinema-platform
+
+    users-service:
+        container_name: users-service
+        image: ruslanparkhomchuk/cinema-platform:users-latest
+        restart: always
+        env_file:
+            - ./envs/env.users
+        networks:
+            - cinema-platform
+
+networks:
+    cinema-platform:
+        external: true
