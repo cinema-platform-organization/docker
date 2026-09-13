@@ -6,7 +6,7 @@ services:
         image: ruslanparkhomchuk/cinema-platform:auth-latest
         restart: always
         env_file:
-            - ./envs/env.auth
+            - ./envs/.env.auth
         expose:
             - "9101"
         volumes:
@@ -19,7 +19,7 @@ services:
         image: ruslanparkhomchuk/cinema-platform:booking-latest
         restart: always
         env_file:
-            - ./envs/env.booking
+            - ./envs/.env.booking
         networks:
             - cinema-platform
 
@@ -28,7 +28,7 @@ services:
         image: ruslanparkhomchuk/cinema-platform:bot-latest
         restart: always
         env_file:
-            - ./envs/env.bot
+            - ./envs/.env.bot
         networks:
             - cinema-platform
 
@@ -37,7 +37,7 @@ services:
         image: ruslanparkhomchuk/cinema-platform:gateway-latest
         restart: always
         env_file:
-            - ./envs/env.gateway
+            - ./envs/.env.gateway
         ports:
             - "4000:4000"
         healthcheck:
@@ -53,7 +53,7 @@ services:
         image: ruslanparkhomchuk/cinema-platform:media-latest
         restart: always
         env_file:
-            - ./envs/env.media
+            - ./envs/.env.media
         ports:
             - "4200:4200"
         networks:
@@ -64,7 +64,7 @@ services:
         image: ruslanparkhomchuk/cinema-platform:movie-latest
         restart: always
         env_file:
-            - ./envs/env.movie
+            - ./envs/.env.movie
         networks:
             - cinema-platform
 
@@ -73,7 +73,7 @@ services:
         image: ruslanparkhomchuk/cinema-platform:notification-latest
         restart: always
         env_file:
-            - ./envs/env.notification
+            - ./envs/.env.notification
         networks:
             - cinema-platform
 
@@ -82,7 +82,7 @@ services:
         image: ruslanparkhomchuk/cinema-platform:payment-latest
         restart: always
         env_file:
-            - ./envs/env.payment
+            - ./envs/.env.payment
         networks:
             - cinema-platform
 
@@ -91,7 +91,7 @@ services:
         image: ruslanparkhomchuk/cinema-platform:screening-latest
         restart: always
         env_file:
-            - ./envs/env.screening
+            - ./envs/.env.screening
         networks:
             - cinema-platform
 
@@ -100,7 +100,7 @@ services:
         image: ruslanparkhomchuk/cinema-platform:theater-latest
         restart: always
         env_file:
-            - ./envs/env.theater
+            - ./envs/.env.theater
         networks:
             - cinema-platform
 
@@ -109,7 +109,7 @@ services:
         image: ruslanparkhomchuk/cinema-platform:users-latest
         restart: always
         env_file:
-            - ./envs/env.users
+            - ./envs/.env.users
         networks:
             - cinema-platform
 
