@@ -7,8 +7,8 @@ services:
         restart: always
         env_file:
             - ./envs/infrastructure/.env.postgres
-        ports:
-            - 5433:5432
+        expose:
+            - "5432"
         volumes:
             - postgres_data:/var/lib/postgresql/data
             - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
@@ -21,8 +21,8 @@ services:
         restart: always
         env_file:
             - ./envs/infrastructure/.env.mongo
-        ports:
-            - 27018:27017
+        expose:
+            - "27017"
         volumes:
             - mongo_data:/data/db
         networks:
@@ -35,8 +35,8 @@ services:
         env_file:
             - ./envs/infrastructure/.env.redis
         command: ["sh", "-c", 'redis-server --requirepass "$$REDIS_PASSWORD"']
-        ports:
-            - 6379:6379
+        expose:
+            - "6379"
         volumes:
             - redis_data:/data
         networks:
@@ -48,9 +48,9 @@ services:
         restart: always
         env_file:
             - ./envs/infrastructure/.env.rabbitmq
-        ports:
-            - 5672:5672
-            - 15672:15672
+        expose:
+            - "5672"
+            - "15672"
         volumes:
             - rabbitmq_data:/var/lib/rabbitmq
         networks:
@@ -62,8 +62,8 @@ services:
         restart: always
         env_file:
             - ./envs/infrastructure/.env.postgres
-        ports:
-            - 9187:9187
+        expose:
+            - "9187"
         networks:
             - cinema-platform
         depends_on:
@@ -77,8 +77,8 @@ services:
             - ./envs/infrastructure/.env.redis
         environment:
             REDIS_ADDR: redis://redis:6379
-        ports:
-            - 9121:9121
+        expose:
+            - "9121"
         networks:
             - cinema-platform
         depends_on:
@@ -92,8 +92,8 @@ services:
             - ./envs/infrastructure/.env.rabbitmq
         environment:
             RABBIT_URL: http://rabbitmq:15672
-        ports:
-            - 9419:9419
+        expose:
+            - "9419"
         networks:
             - cinema-platform
         depends_on:
@@ -103,8 +103,8 @@ services:
         container_name: node-exporter
         image: prom/node-exporter
         restart: always
-        ports:
-            - 9100:9100
+        expose:
+            - "9100"
         networks:
             - cinema-platform
 
@@ -114,8 +114,8 @@ services:
         restart: always
         volumes:
             - ./prometheus.yml:/etc/prometheus/prometheus.yml
-        ports:
-            - 9090:9090
+        expose:
+            - "9090"
         networks:
             - cinema-platform
 
@@ -123,10 +123,10 @@ services:
         container_name: jaeger
         image: jaegertracing/all-in-one:1.47
         restart: unless-stopped
-        ports:
-            - 16686:16686
-            - 4317:4317
-            - 4318:4318
+        expose:
+            - "16686"
+            - "4317"
+            - "4318"
         networks:
             - cinema-platform
 
@@ -139,8 +139,8 @@ services:
             - ./loki-data:/loki
             - ./loki-wal:/wal
         command: -config.file=/etc/loki/config.yaml
-        ports:
-            - "3100:3100"
+        expose:
+            - "3100"
         networks:
             - cinema-platform
 
@@ -158,12 +158,26 @@ services:
         container_name: grafana
         image: grafana/grafana:10.2.3
         restart: unless-stopped
-        ports:
-            - "3002:3000"
+        expose:
+            - "3000"
         volumes:
             - grafana-storage:/var/lib/grafana
         depends_on:
             - prometheus
+        networks:
+            - cinema-platform
+
+    caddy:
+        container_name: caddy
+        image: caddy:2
+        restart: always
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./Caddyfile:/etc/caddy/Caddyfile
+            - caddy_data:/data
+            - caddy_config:/config
         networks:
             - cinema-platform
 
@@ -173,6 +187,8 @@ volumes:
     redis_data:
     rabbitmq_data:
     grafana-storage:
+    caddy_data:
+    caddy_config:
 
 networks:
     cinema-platform:

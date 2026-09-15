@@ -1,4 +1,7 @@
-docker network create cinema-platform
 docker compose -f docker-compose.infrastructure.yml up -d
 docker compose -f docker-compose.services.yml pull
 docker compose -f docker-compose.services.yml up -d
+
+ssh root@65.21.153.130
+cd /opt/cinema-platform/docker-prod
+docker ps -a --filter status=restarting

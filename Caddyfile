@@ -1,0 +1,11 @@
+api.cinema-platform.site {
+	reverse_proxy gateway-service:4000
+}
+
+media.cinema-platform.site {
+	reverse_proxy media-service:4200
+}
+
+grafana.cinema-platform.site {
+	reverse_proxy grafana:3000
+}
